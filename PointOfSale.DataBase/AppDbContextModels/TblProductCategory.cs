@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PointOfSale.DataBase.AppDbContextModels;
 
-public partial class ProductCategory
+public partial class TblProductCategory
 {
     public int ProductCategoryId { get; set; }
 
@@ -13,5 +13,5 @@ public partial class ProductCategory
 
     public bool? DeleteFlag { get; set; }
 
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public virtual ICollection<TblProduct> TblProducts { get; set; } = new List<TblProduct>();
 }

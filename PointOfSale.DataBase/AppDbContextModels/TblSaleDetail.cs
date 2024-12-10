@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PointOfSale.DataBase.AppDbContextModels;
 
-public partial class SaleDetail
+public partial class TblSaleDetail
 {
     public int SaleDetailId { get; set; }
 
@@ -15,5 +15,5 @@ public partial class SaleDetail
 
     public decimal? Price { get; set; }
 
-    public virtual Sale VoucherNoNavigation { get; set; } = null!;
+    public virtual TblSale VoucherNoNavigation { get; set; } = null!;
 }

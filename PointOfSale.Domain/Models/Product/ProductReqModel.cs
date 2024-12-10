@@ -9,6 +9,6 @@ namespace PointOfSale.Domain.Models.Product
     public class ProductReqModel
     {
     
-        public Product product { get; set; }
+        public TblProduct product { get; set; }
     }
 }
