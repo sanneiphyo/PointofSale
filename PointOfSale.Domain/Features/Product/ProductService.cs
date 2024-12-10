@@ -10,7 +10,7 @@ using PointOfSale.Domain.Models.Product;
 
 namespace PointOfSale.Domain.Features.Product
 {
-   public class ProductService
+    public class ProductService
     {
         private readonly AppDbContext _db;
 
@@ -19,26 +19,26 @@ namespace PointOfSale.Domain.Features.Product
             _db = db;
         }
 
-        public async Task<Result<ProductReqModel>> CreateProduct(string productCode ,string name,decimal price)
+        public async Task<Result<ResultProductResponseModel>> CreateProduct(string productCode, string name, decimal price)
         {
-            Result <ProductResponseModel> model = new Result<ProductResponseModel> ();
+            Result<ResultProductResponseModel> model = new Result<ResultProductResponseModel>();
 
-            var ExistingProduct = _db.Products.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == productCode);
+            var ExistingProduct = _db.TblProducts.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == productCode);
 
-            if (ExistingProduct is null) 
-            { 
-                model = Result<ProductResponseModel>.SystemError("Product Code is already exist");
+            if (ExistingProduct is null)
+            {
+                model = Result<ResultProductResponseModel>.SystemError("Product Code is already exist");
                 goto Result;
             }
 
             if (productCode.Length > 4)
             {
 
-                model = Result<ProductResponseModel>.SystemError("character must be 4 letters ");
+                model = Result<ResultProductResponseModel>.SystemError("character must be 4 letters ");
                 goto Result;
             }
 
-            var newProduct = new Product
+            var newProduct = new TblProduct
             {
                 ProductCode = productCode,
                 Name = name,
@@ -46,22 +46,19 @@ namespace PointOfSale.Domain.Features.Product
 
             };
 
-            await _db.Product.AddAsync(newProduct);
+            await _db.TblProducts.AddAsync(newProduct);
             await _db.SaveChangesAsync();
 
 
-            var item = new ProductResponseModel
+            var item = new ResultProductResponseModel
             {
-                Prduct = newProduct
+                Product = newProduct
             };
+            model = Result<ResultProductResponseModel>.Success(item, "Success.");
 
-            model = Result<productResponseModel>.Success(item, "Success.");
-
-  
-        }
         Result:
             return model;
+        }
     }
-
 }
 
