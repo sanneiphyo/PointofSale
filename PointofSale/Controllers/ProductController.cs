@@ -3,32 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using PointOfSale.Domain.Features.Product;
 using PointOfSale.Domain.Models.Product;
 
-namespace PointofSale.RestApi.Controllers
+namespace PointofSale.RestApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductController : ControllerBase
+    private readonly ProductService _service;
+
+    public ProductController(ProductService service)
     {
-        private readonly ProductService _service;
+        _service = service;
+    }
 
-        public ProductController(ProductService service)
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateProduct([FromBody] ProductReqModel reqModel)
+    {
+        try
         {
-            _service = service;
+            var result = await _service.CreateProductAsync(reqModel.ProductCode, reqModel.Name, reqModel.Price);
+            return Ok(result);
         }
-
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductReqModel reqModel)
+        catch (Exception ex)
         {
-            try
-            {
-                var result = await _service.CreateProductAsync(reqModel.ProductCode, reqModel.Name, reqModel.Price);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
 
-                return StatusCode(500, new { error = ex.Message });
-            }
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 }
