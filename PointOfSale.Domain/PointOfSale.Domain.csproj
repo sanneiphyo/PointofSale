@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PointOfSale.DataBase\PointOfSale.DataBase.csproj" />
+  </ItemGroup>
+
 </Project>
