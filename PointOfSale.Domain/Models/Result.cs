@@ -28,7 +28,7 @@ namespace PointOfSale.Domain.Models
             };
         }
 
-        public static Result<T> ValidationError(string message , T? data =default)
+        public static Result<T> ValidationError(string message, T? data = default)
         {
             return new Result<T>()
             {
@@ -51,11 +51,12 @@ namespace PointOfSale.Domain.Models
         }
 
         public enum EnumRespType
-    {
-        None,
-        Success,
-        ValidationError,
-        SystemError
-    }
+        {
+            None,
+            Success,
+            ValidationError,
+            SystemError
+        }
 
+    }
 }

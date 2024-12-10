@@ -19,7 +19,7 @@ namespace PointOfSale.Domain.Features.Product
             _db = db;
         }
 
-        public async Task<Result<ResultProductResponseModel>> CreateProduct(string productCode, string name, decimal price)
+        public async Task<Result<ResultProductResponseModel>> CreateProductAsync(string productCode, string name, decimal price)
         {
             Result<ResultProductResponseModel> model = new Result<ResultProductResponseModel>();
 

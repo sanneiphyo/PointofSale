@@ -1,4 +1,4 @@
-namespace PointofSale
+namespace PointedSale
 {
     public class WeatherForecast
     {

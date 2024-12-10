@@ -7,7 +7,7 @@ using PointOfSale.DataBase.AppDbContextModels;
 
 namespace PointOfSale.Domain.Models.Product
 {
-    public class ResultProductReqModel
+    public class ProductReqModel
     {
         public string ProductCode { get; set; } = null!;
 
@@ -15,7 +15,7 @@ namespace PointOfSale.Domain.Models.Product
 
         public decimal Price { get; set; }
 
-        public string ProductCategoryCode { get; set; } = null!;
+       
 
     }
 }
