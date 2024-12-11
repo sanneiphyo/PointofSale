@@ -1,12 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PointOfSale.Domain.Features.Product;
+using PointOfSale.Domain.Models.Product;
 
-namespace PointOfSale.Domain.Models.ProductCategory
+namespace PointofSale.RestApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductController : ControllerBase
 {
-    internal class ProductCategoryReqModel
+    private readonly ProductService _service;
+
+    public ProductController(ProductService service)
     {
+        _service = service;
+    }
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateProduct([FromBody] ProductReqModel reqModel)
+    {
+        try
+        {
+            var result = await _service.CreateProductAsync(reqModel.ProductCode, reqModel.Name, reqModel.Price);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 }
