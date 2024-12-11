@@ -45,4 +45,19 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    [HttpPut("{productCode}")]
+    public async Task<IActionResult>UpdateProductAsync(string productCode, ProductRequestModel requestModel)
+    {
+        try
+        {
+            var item = await _service.UpdateProductAsync(productCode, requestModel);
+            return Ok(item);
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
 }
