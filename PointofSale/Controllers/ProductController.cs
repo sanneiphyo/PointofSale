@@ -17,11 +17,11 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductReqModel reqModel)
+    public async Task<IActionResult> CreateProduct([FromBody] ProductResponseModel response)
     {
         try
         {
-            var result = await _service.CreateProductAsync(reqModel.ProductCode, reqModel.Name, reqModel.Price);
+            var result = await _service.CreateProductAsync(response);
             return Ok(result);
         }
         catch (Exception ex)

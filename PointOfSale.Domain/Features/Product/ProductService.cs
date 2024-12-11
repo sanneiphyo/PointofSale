@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Models;
 using PointOfSale.Domain.Models.Product;
@@ -19,46 +14,59 @@ namespace PointOfSale.Domain.Features.Product
             _db = db;
         }
 
-        public async Task<Result<ResultProductResponseModel>> CreateProductAsync(string productCode, string name, decimal price)
+        #region CreateProductAsync
+
+        public async Task<Result<ProductResponseModel>> CreateProductAsync(ProductResponseModel response)
         {
-            Result<ResultProductResponseModel> model = new Result<ResultProductResponseModel>();
+            Result<ProductResponseModel> model = new Result<ProductResponseModel>();
 
-            var ExistingProduct = _db.TblProducts.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == productCode);
-
-            if (ExistingProduct is null)
+            try
             {
-                model = Result<ResultProductResponseModel>.SystemError("Product Code is already exist");
-                goto Result;
+                var existingProduct = await _db.TblProducts
+                                               .AsNoTracking()
+                                               .FirstOrDefaultAsync(x => x.ProductCode == response.ProductCode);
+
+                if (existingProduct != null)
+                {
+                    model = Result<ProductResponseModel>.SystemError("Product Code already exists");
+                    return model;
+                }
+
+                if (response.ProductCode.Length != 4)
+                {
+                    model = Result<ProductResponseModel>.SystemError("Product Code must be exactly 4 numeric characters");
+                    return model;
+                }
+
+                var product = new TblProduct
+                {
+                    ProductCode = response.ProductCode,
+                    Name = response.Name,
+                    Price = response.Price,
+                    ProductCategoryCode = response.ProductCategoryCode,
+                };
+
+                await _db.TblProducts.AddAsync(product);
+                await _db.SaveChangesAsync();
+
+                model = Result<ProductResponseModel>.Success(new ProductResponseModel
+                {
+                    ProductCode = product.ProductCode,
+                    Name = product.Name,
+                    Price = product.Price,
+                    ProductCategoryCode = product.ProductCategoryCode
+                });
+
+                return model;
             }
-
-            if (productCode.Length > 4)
+            catch (Exception ex)
             {
-
-                model = Result<ResultProductResponseModel>.SystemError("character must be 4 letters ");
-                goto Result;
+                return Result<ProductResponseModel>.SystemError(ex.Message);
             }
-
-            var newProduct = new TblProduct
-            {
-                ProductCode = productCode,
-                Name = name,
-                Price = price
-
-            };
-
-            await _db.TblProducts.AddAsync(newProduct);
-            await _db.SaveChangesAsync();
-
-
-            var item = new ResultProductResponseModel
-            {
-                Product = newProduct
-            };
-            model = Result<ResultProductResponseModel>.Success(item, "Success.");
-
-        Result:
-            return model;
         }
+
+        #endregion
+
     }
 }
 
