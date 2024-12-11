@@ -14,6 +14,8 @@ namespace PointOfSale.Domain.Features.Product
             _db = db;
         }
 
+        #region CreateProductAsync
+
         public async Task<Result<ResponseModel>> CreateProductAsync(ResponseModel response)
         {
             Result<ResponseModel> model = new Result<ResponseModel>();
@@ -63,6 +65,7 @@ namespace PointOfSale.Domain.Features.Product
             }
         }
 
+        #endregion
 
     }
 }
