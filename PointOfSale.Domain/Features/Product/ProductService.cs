@@ -68,6 +68,8 @@ namespace PointOfSale.Domain.Features.Product
 
         #endregion
 
+        #region  GetProductAsync
+
         public async Task<Result<List<ProductModel>>> GetProductAsync()
         {
             Result<List<ProductModel>> model;
@@ -94,6 +96,10 @@ namespace PointOfSale.Domain.Features.Product
                 return Result<List<ProductModel>>.SystemError(ex.Message);
             }
         }
+
+        #endregion
+
+
 
     }
 }
