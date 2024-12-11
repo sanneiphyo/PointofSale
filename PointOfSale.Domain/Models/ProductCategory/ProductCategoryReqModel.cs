@@ -12,6 +12,6 @@ namespace PointOfSale.Domain.Models.ProductCategory
 
         public string Name { get; set; } = null!;
 
-        public decimal DeleteFlag { get; set; } = 0; 
+        public bool? DeleteFlag { get; set; }
     }
 }
