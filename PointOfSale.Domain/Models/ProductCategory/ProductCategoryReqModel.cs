@@ -1,33 +1,17 @@
-﻿﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PointOfSale.Domain.Features.Product;
-using PointOfSale.Domain.Models.Product;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PointofSale.RestApi.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class ProductController : ControllerBase
+namespace PointOfSale.Domain.Models.ProductCategory
 {
-    private readonly ProductService _service;
-
-    public ProductController(ProductService service)
+    public class ProductCategoryReqModel
     {
-        _service = service;
-    }
+        public string ProductCategoryCode { get; set; } = null!;
 
-    [HttpPost("create")]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductReqModel reqModel)
-    {
-        try
-        {
-            var result = await _service.CreateProductAsync(reqModel.ProductCode, reqModel.Name, reqModel.Price);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
+        public string Name { get; set; } = null!;
 
-            return StatusCode(500, new { error = ex.Message });
-        }
+        public decimal DeleteFlag { get; set; } = 0; // Default value as 0, indicating not deleted (soft delete flag)
     }
 }
