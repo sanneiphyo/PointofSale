@@ -16,13 +16,28 @@ public class ProductController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("create")]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductResponseModel response)
+    [HttpPost("Create")]
+    public async Task<IActionResult> CreateProductAsync([FromBody] ProductResponseModel response)
     {
         try
         {
             var result = await _service.CreateProductAsync(response);
             return Ok(result);
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(500, new { error = ex.Message });
+        }
+    }
+
+    [HttpGet("Get")]
+    public async Task<IActionResult> GetProductAsync()
+    {
+        try
+        {
+            var lst = await _service.GetProductAsync();
+            return Ok(lst);
         }
         catch (Exception ex)
         {
