@@ -15,7 +15,6 @@ namespace PointOfSale.Domain.Models.Product
 
         public decimal Price { get; set; }
 
-       
 
     }
 }
