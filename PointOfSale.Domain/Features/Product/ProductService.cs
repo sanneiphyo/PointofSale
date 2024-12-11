@@ -83,6 +83,7 @@ namespace PointOfSale.Domain.Features.Product
                 var item = await product.Select(x => new ProductModel()
                 {
                     Id = x.Id,
+                    ProductCode = x.ProductCode,
                     Name = x.Name,
                     Price = x.Price,
                     ProductCategoryCode = x.ProductCategoryCode,
@@ -98,6 +99,37 @@ namespace PointOfSale.Domain.Features.Product
         }
 
         #endregion
+
+      
+        public async Task<Result<ProductRequestModel>> UpdateProductAsync(string productCode, ProductRequestModel requestModel)
+        {
+            Result<ProductRequestModel> model;
+
+            try
+            {
+                var product = await _db.TblProducts.FirstOrDefaultAsync(x => x.ProductCode == productCode);
+
+                if(product is null)
+                {
+                    model = Result<ProductRequestModel>.SystemError("No Data Found with this Product Code");
+                    return model;
+                }
+
+                product.Price = requestModel.Price;
+
+                _db.TblProducts.Update(product);
+                await _db.SaveChangesAsync();
+
+                model = Result<ProductRequestModel>.Success(requestModel);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return Result<ProductRequestModel>.SystemError(ex.Message);
+            }
+        }
+
 
 
 
