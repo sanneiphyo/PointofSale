@@ -2,7 +2,6 @@
 using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Models;
 using PointOfSale.Domain.Models.Product;
-using System.Collections.Generic;
 
 namespace PointOfSale.Domain.Features.Product
 {
@@ -100,7 +99,8 @@ namespace PointOfSale.Domain.Features.Product
 
         #endregion
 
-      
+        #region UpdateProductAsync
+
         public async Task<Result<ProductRequestModel>> UpdateProductAsync(string productCode, ProductRequestModel requestModel)
         {
             Result<ProductRequestModel> model;
@@ -130,8 +130,7 @@ namespace PointOfSale.Domain.Features.Product
             }
         }
 
-
-
+        #endregion
 
     }
 }
