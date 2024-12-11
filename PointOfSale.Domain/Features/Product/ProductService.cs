@@ -2,6 +2,7 @@
 using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Models;
 using PointOfSale.Domain.Models.Product;
+using System.Collections.Generic;
 
 namespace PointOfSale.Domain.Features.Product
 {
@@ -18,7 +19,7 @@ namespace PointOfSale.Domain.Features.Product
 
         public async Task<Result<ProductResponseModel>> CreateProductAsync(ProductResponseModel response)
         {
-            Result<ProductResponseModel> model = new Result<ProductResponseModel>();
+            Result<ProductResponseModel> model;
 
             try
             {
@@ -66,6 +67,33 @@ namespace PointOfSale.Domain.Features.Product
         }
 
         #endregion
+
+        public async Task<Result<List<ProductModel>>> GetProductAsync()
+        {
+            Result<List<ProductModel>> model;
+
+            try
+            {
+                var product = _db.TblProducts
+                    .Where(x => x.DeleteFlag == false)
+                    .AsNoTracking();
+
+                var item = await product.Select(x => new ProductModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    ProductCategoryCode = x.ProductCategoryCode,
+                    DeleteFlag = x.DeleteFlag
+                }).ToListAsync();
+
+                return Result<List<ProductModel>>.Success(item);
+            }
+            catch(Exception ex)
+            {
+                return Result<List<ProductModel>>.SystemError(ex.Message);
+            }
+        }
 
     }
 }
