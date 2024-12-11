@@ -1,10 +1,16 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using PointOfSale.DataBase.AppDbContextModels;
 
-namespace PointOfSale.Domain.Models.ProductCategory
+
+namespace PointOfSale.Domain.Models.Product
 {
-    public class ResultProductCategoryResponseModel
+   public class ResultProductResponseModel
     {
-       public TblProductCategory? ProductCategory { get; set; } = null!; //category ka null ma phyit buu htin dr pl please correct me if i'm wrong
+        public TblProduct? Product { get; set; }
     }
 }
+
