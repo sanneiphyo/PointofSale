@@ -16,9 +16,9 @@ namespace PointOfSale.Domain.Features.Product
 
         #region CreateProductAsync
 
-        public async Task<Result<ResponseModel>> CreateProductAsync(ResponseModel response)
+        public async Task<Result<ProductResponseModel>> CreateProductAsync(ProductResponseModel response)
         {
-            Result<ResponseModel> model = new Result<ResponseModel>();
+            Result<ProductResponseModel> model = new Result<ProductResponseModel>();
 
             try
             {
@@ -28,13 +28,13 @@ namespace PointOfSale.Domain.Features.Product
 
                 if (existingProduct != null)
                 {
-                    model = Result<ResponseModel>.SystemError("Product Code already exists");
+                    model = Result<ProductResponseModel>.SystemError("Product Code already exists");
                     return model;
                 }
 
                 if (response.ProductCode.Length != 4)
                 {
-                    model = Result<ResponseModel>.SystemError("Product Code must be exactly 4 numeric characters");
+                    model = Result<ProductResponseModel>.SystemError("Product Code must be exactly 4 numeric characters");
                     return model;
                 }
 
@@ -49,7 +49,7 @@ namespace PointOfSale.Domain.Features.Product
                 await _db.TblProducts.AddAsync(product);
                 await _db.SaveChangesAsync();
 
-                model = Result<ResponseModel>.Success(new ResponseModel
+                model = Result<ProductResponseModel>.Success(new ProductResponseModel
                 {
                     ProductCode = product.ProductCode,
                     Name = product.Name,
@@ -61,7 +61,7 @@ namespace PointOfSale.Domain.Features.Product
             }
             catch (Exception ex)
             {
-                return Result<ResponseModel>.SystemError(ex.Message);
+                return Result<ProductResponseModel>.SystemError(ex.Message);
             }
         }
 

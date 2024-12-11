@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PointOfSale.Domain.Models.Product
 {
-    public class RequestModel
+    public class ProductRequestModel
     {
        
     }
