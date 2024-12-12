@@ -28,6 +28,16 @@ namespace PointOfSale.Domain.Models
             };
         }
 
+        public static Result<T> DeleteSuccess(string message = "Deleting Successful.")
+        {
+            return new Result<T>()
+            {
+                IsSuccess = true,
+                Type = EnumRespType.Success,
+                Message = message
+            };
+        }
+
         public static Result<T> ValidationError(string message, T? data = default)
         {
             return new Result<T>()
