@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PointOfSale.Domain.Features.Product;
-using PointOfSale.Domain.Models.Product;
+﻿
 
 namespace PointofSale.RestApi.Controllers;
 

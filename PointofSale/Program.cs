@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Features.Product;
-using PointOfSale.Domain.Features.Sale;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
