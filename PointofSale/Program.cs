@@ -9,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region DI
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
@@ -18,6 +20,8 @@ builder.Services.AddScoped<ProductService>();
 
 builder.Services.AddScoped<SaleService>();
 builder.Services.AddScoped<SaleDetailsService>();
+
+#endregion
 
 var app = builder.Build();
 
