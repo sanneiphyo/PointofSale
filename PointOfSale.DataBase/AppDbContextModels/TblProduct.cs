@@ -1,5 +1,7 @@
 ﻿namespace PointOfSale.DataBase.AppDbContextModels;
 
+#region TblProduct
+
 public partial class TblProduct
 {
     public int Id { get; set; }
@@ -16,3 +18,5 @@ public partial class TblProduct
 
     public virtual TblProductCategory ProductCategoryCodeNavigation { get; set; } = null!;
 }
+
+#endregion
