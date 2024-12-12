@@ -1,5 +1,7 @@
 ﻿namespace PointOfSale.Domain.Models.Product;
 
+#region ProductResponseModel
+
 public class ProductResponseModel
 {
     public string ProductCode { get; set; } = null!;
@@ -10,3 +12,5 @@ public class ProductResponseModel
 
     public string ProductCategoryCode { get; set; } = null!;
 }
+
+#endregion
