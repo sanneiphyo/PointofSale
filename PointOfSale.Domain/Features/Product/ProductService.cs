@@ -23,7 +23,7 @@ namespace PointOfSale.Domain.Features.Product
 
             try
             {
-                var existingProduct = await _db.TblProducts
+                var existingProduct = await _db.TblSale
                                                .AsNoTracking()
                                                .FirstOrDefaultAsync(x => x.ProductCode == response.ProductCode);
 
@@ -47,7 +47,7 @@ namespace PointOfSale.Domain.Features.Product
                     ProductCategoryCode = response.ProductCategoryCode,
                 };
 
-                await _db.TblProducts.AddAsync(product);
+                await _db.TblSale.AddAsync(product);
                 await _db.SaveChangesAsync();
 
                 model = Result<ProductResponseModel>.Success(new ProductResponseModel
@@ -74,7 +74,7 @@ namespace PointOfSale.Domain.Features.Product
 
             try
             {
-                var product = _db.TblProducts
+                var product = _db.TblSale
                     .Where(x => x.DeleteFlag == false)
                     .AsNoTracking();
 

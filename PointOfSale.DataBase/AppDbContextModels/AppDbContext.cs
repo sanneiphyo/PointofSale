@@ -12,7 +12,7 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public virtual DbSet<TblProduct> TblProducts { get; set; }
+    public virtual DbSet<TblProduct> TblSale { get; set; }
 
     public virtual DbSet<TblProductCategory> TblProductCategories { get; set; }
 

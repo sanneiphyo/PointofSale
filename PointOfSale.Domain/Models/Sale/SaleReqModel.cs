@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace PointOfSale.Domain.Models.Sale
 {
-    internal class SaleReqModel
+    public class SaleReqModel
     {
+        public int SaleId { get; set; }
+
+        public string VoucherNo { get; set; } = null!;
+
+        public DateTime? SaleDate { get; set; }
+
+        public decimal TotalAmount { get; set; }
     }
 }
