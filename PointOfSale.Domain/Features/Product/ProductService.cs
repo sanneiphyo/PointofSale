@@ -91,7 +91,7 @@ public class ProductService
 
             return Result<List<ProductModel>>.Success(item);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return Result<List<ProductModel>>.SystemError(ex.Message);
         }
@@ -109,7 +109,7 @@ public class ProductService
         {
             var product = await _db.TblProducts.FirstOrDefaultAsync(x => x.ProductCode == productCode);
 
-            if(product is null)
+            if (product is null)
             {
                 model = Result<ProductRequestModel>.SystemError("No Data Found with this Product Code");
                 return model;
@@ -131,6 +131,38 @@ public class ProductService
     }
 
     #endregion
+
+   public async Task<Result<ProductModel>> SoftDeleteProductAsync(string productCode)
+   {
+       Result<ProductModel> model;
+
+       try
+       {
+           var product = await _db.TblProducts.FirstOrDefaultAsync(x => x.ProductCode == productCode && x.DeleteFlag == false);
+
+           if (product is null)
+           {
+              model = Result<ProductModel>.ValidationError("No Data Found with this Product Code");
+               return model;
+           }
+
+           product.DeleteFlag = true;
+
+           _db.TblProducts.Update(product);
+           await _db.SaveChangesAsync();
+
+            model = Result<ProductModel>.DeleteSuccess();
+        
+
+           return model;
+       }
+       catch (Exception ex)
+       {
+           return Result<ProductModel>.SystemError(ex.Message);
+       }
+   }
+
+
 
 }
 
