@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PointOfSale.DataBase.AppDbContextModels;
+﻿namespace PointOfSale.DataBase.AppDbContextModels;
 
 public partial class TblSaleDetail
 {

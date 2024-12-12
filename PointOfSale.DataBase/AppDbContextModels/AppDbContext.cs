@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
-namespace PointOfSale.DataBase.AppDbContextModels;
+﻿namespace PointOfSale.DataBase.AppDbContextModels;
 
 public partial class AppDbContext : DbContext
 {
