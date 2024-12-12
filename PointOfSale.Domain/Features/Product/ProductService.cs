@@ -132,8 +132,10 @@ public class ProductService
 
     #endregion
 
-   public async Task<Result<ProductModel>> SoftDeleteProductAsync(string productCode)
-   {
+    #region SoftDeleteProductAsync
+
+    public async Task<Result<ProductModel>> SoftDeleteProductAsync(string productCode)
+    {
        Result<ProductModel> model;
 
        try
@@ -160,9 +162,9 @@ public class ProductService
        {
            return Result<ProductModel>.SystemError(ex.Message);
        }
-   }
+    }
 
-
+    #endregion
 
 }
 
