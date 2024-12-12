@@ -35,6 +35,8 @@ public class ProductController : ControllerBase
 
     #endregion
 
+    #region GetProductAsync
+
     [HttpGet("Get")]
     public async Task<IActionResult> GetProductAsync()
     {
@@ -49,6 +51,8 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 
     [HttpPut("{productCode}")]
     public async Task<IActionResult>UpdateProductAsync(string productCode, ProductRequestModel requestModel)
