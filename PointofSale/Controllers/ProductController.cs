@@ -16,6 +16,8 @@ public class ProductController : ControllerBase
         _service = service;
     }
 
+    #region CreateProductAsync
+
     [HttpPost("Create")]
     public async Task<IActionResult> CreateProductAsync([FromBody] ProductResponseModel response)
     {
@@ -30,6 +32,8 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 
     [HttpGet("Get")]
     public async Task<IActionResult> GetProductAsync()
