@@ -1,5 +1,7 @@
 ﻿namespace PointOfSale.Domain.Models.Product;
 
+#region ProductModel
+
 public class ProductModel
 {
     public int Id { get; set; }
@@ -13,5 +15,6 @@ public class ProductModel
     public string ProductCategoryCode { get; set; } = null!;
 
     public bool? DeleteFlag { get; set; }
-
 }
+
+#endregion
