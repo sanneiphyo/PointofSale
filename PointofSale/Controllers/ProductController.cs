@@ -54,6 +54,8 @@ public class ProductController : ControllerBase
 
     #endregion
 
+    #region UpdateProductAsync
+
     [HttpPut("{productCode}")]
     public async Task<IActionResult>UpdateProductAsync(string productCode, ProductRequestModel requestModel)
     {
@@ -68,6 +70,8 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 
     [HttpDelete("{productCode}")]
     public async Task<IActionResult> SoftDeleteProductAsync(string productCode)
