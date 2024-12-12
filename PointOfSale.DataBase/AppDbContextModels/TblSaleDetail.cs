@@ -1,5 +1,7 @@
 ﻿namespace PointOfSale.DataBase.AppDbContextModels;
 
+#region TblSaleDetail
+
 public partial class TblSaleDetail
 {
     public int SaleDetailId { get; set; }
@@ -14,3 +16,5 @@ public partial class TblSaleDetail
 
     public virtual TblSale VoucherNoNavigation { get; set; } = null!;
 }
+
+#endregion

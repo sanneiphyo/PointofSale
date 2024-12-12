@@ -1,5 +1,7 @@
 ﻿namespace PointOfSale.DataBase.AppDbContextModels;
 
+#region TblSale
+
 public partial class TblSale
 {
     public int SaleId { get; set; }
@@ -12,3 +14,5 @@ public partial class TblSale
 
     public virtual ICollection<TblSaleDetail> TblSaleDetails { get; set; } = new List<TblSaleDetail>();
 }
+
+#endregion
