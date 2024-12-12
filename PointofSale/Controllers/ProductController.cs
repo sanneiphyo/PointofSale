@@ -60,4 +60,20 @@ public class ProductController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    [HttpDelete("{productCode}")]
+    public async Task<IActionResult> SoftDeleteProductAsync(string productCode)
+    {
+        try
+        {
+            var item = await _service.SoftDeleteProductAsync(productCode);
+            return Ok(item);
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(500, new { error = ex.Message });
+        }
+
+    }
 }
