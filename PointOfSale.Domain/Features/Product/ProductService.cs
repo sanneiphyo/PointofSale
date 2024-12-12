@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Models;
-using PointOfSale.Domain.Models.Product;
-
-namespace PointOfSale.Domain.Features.Product;
+﻿namespace PointOfSale.Domain.Features.Product;
 
 public class ProductService
 {
