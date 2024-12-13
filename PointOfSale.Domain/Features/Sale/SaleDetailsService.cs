@@ -9,6 +9,8 @@ public class SaleDetailsService
         _db = db;
     }
 
+    #region GetSaleDetailAsync
+
     public async Task<Result<ResultSaleDetailModel>> GetSaleDetailAsync(string voucherNo)
     {
         try
@@ -39,6 +41,8 @@ public class SaleDetailsService
 
         }
     }
+
+    #endregion
 
     public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(TblSaleDetail saleDetail)
     {
