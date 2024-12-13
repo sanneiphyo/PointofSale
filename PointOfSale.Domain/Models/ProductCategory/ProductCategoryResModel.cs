@@ -1,8 +1,7 @@
-﻿namespace PointOfSale.Domain.Models.ProductCategory
+﻿namespace PointOfSale.Domain.Models.ProductCategory;
+
+public class ProductCategoryResModel
 {
-    public class ProductCategoryResModel
-    {
-        public string Name { get; set; } = null!;
-    }
+    public string Name { get; set; } = null!;
 }
 
