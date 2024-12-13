@@ -29,7 +29,7 @@ public partial class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-        #region TblProduct
+        #region TblProducts
 
         modelBuilder.Entity<TblProduct>(entity =>
         {

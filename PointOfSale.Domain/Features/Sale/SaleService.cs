@@ -55,7 +55,7 @@ namespace PointOfSale.Domain.Features.Sale
             }
         }
 
-        public async Task<Result<ResultSaleModel>> CreteSaleAsync(TblSale sale,string voucherNo)
+        public async Task<Result<ResultSaleModel>> CreateSaleAsync(TblSale sale)
         {
             try
             {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Models;
+using PointOfSale.Domain.Models.Product;
 using PointOfSale.Domain.Models.Sale;
 
 namespace PointOfSale.Domain.Features.Sale
@@ -51,22 +52,60 @@ namespace PointOfSale.Domain.Features.Sale
             }
         }
 
-        //public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(TblSaleDetail saleDetail)
-        //{
-        //    try
-        //    {
-        //        Result<ResultSaleDetailModel> model = new Result<ResultSaleDetailModel>();
+        public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(TblSaleDetail saleDetail)
+        {
+            try
+            {
+                Result<ResultSaleDetailModel> model = new Result<ResultSaleDetailModel>();
 
-        //        var voucherNumber = _db.TblSales.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
-        //        var productCode = _db.TblSale.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == saleDetail.ProductCode);
-        //        var voucherSaleDetails = _db.TblSaleDetails.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
+                var voucherNumber = await _db.TblSales.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
+                var productCode =await _db.TblProducts.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == saleDetail.ProductCode);
+                var voucherSaleDetails =await _db.TblSaleDetails.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Result<ResultSaleDetailModel>.SystemError(ex.Message);
+                if (voucherNumber is null)
+                {
+                     model = Result<ResultSaleDetailModel>.ValidationError("Voucher No doesn't exist in Sale.");
+                    goto Result;
+                }
+                if (productCode is null)
+                {
+                    model = Result<ResultSaleDetailModel>.ValidationError("Product Code doesn't exist. Please Create Product Code first!");
+                    goto Result;
+                }
+                if (voucherSaleDetails != null)
+                {
+                     Result<ResultSaleDetailModel>.ValidationError("Voucher is already exist.");
+                    goto Result;
+                }
+                if (!decimal.TryParse(saleDetail.Quantity, out var quantity))
+                {
+                    model = Result<ResultSaleDetailModel>.ValidationError("Invalid quantity value.");
+                    goto Result;
+                }
 
-        //    }
-        //}
+                voucherNumber.TotalAmount = productCode.Price * quantity;
+                saleDetail.Price = productCode.Price;  
+
+                _db.TblSales.Update(voucherNumber);
+                await _db.TblSaleDetails.AddAsync(saleDetail);
+                await _db.SaveChangesAsync();
+
+                var responseModel = new ResultSaleDetailModel
+                {
+                    Detail = saleDetail
+                };
+
+                model = Result<ResultSaleDetailModel>.Success(responseModel, "Product retrieved successfully.");
+
+            Result:
+                return model;
+
+            }
+            catch (Exception ex)
+            {
+                return Result<ResultSaleDetailModel>.SystemError(ex.Message);
+
+            }
+        }
     }
 }
