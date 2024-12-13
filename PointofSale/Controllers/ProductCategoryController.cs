@@ -1,7 +1,4 @@
-﻿using PointOfSale.Domain.Features.ProductCategory;
-using PointOfSale.Domain.Models.ProductCategory;
-
-namespace PointofSale.RestApi.Controllers
+﻿namespace PointofSale.RestApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
