@@ -9,7 +9,8 @@ public class ProductCategoryService
         _db = db;
     }
 
-  
+    #region CreateProductCategoryAsync
+
     public async Task<Result<ProductCategoryReqModel>> CreateProductCategoryAsync(ProductCategoryReqModel response)
     {
         Result<ProductCategoryReqModel> model;
@@ -55,6 +56,8 @@ public class ProductCategoryService
             return Result<ProductCategoryReqModel>.SystemError(ex.Message);
         }
     }
+
+    #endregion
 
     public async Task<Result<List<ProductCategoryModel>>> GetProductCategoryAsync()
     {
