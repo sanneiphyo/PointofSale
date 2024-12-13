@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Features.Sale;
-using PointOfSale.Domain.Models.Sale;
-
-namespace PointofSale.RestApi.Controllers
+﻿namespace PointofSale.RestApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
