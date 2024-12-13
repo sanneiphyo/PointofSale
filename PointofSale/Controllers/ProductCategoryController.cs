@@ -48,5 +48,21 @@ namespace PointofSale.RestApi.Controllers
             }
         }
 
+
+        [HttpPut("{productCategoryCode}")]
+        public async Task<IActionResult> UpdateProductCategoryAsync(string productCategoryCode, ProductCategoryResModel resModel)
+        {
+            try
+            {
+                var item = await _service.UpdateProductCategoryAsync(productCategoryCode, resModel);
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
     }
 }
