@@ -61,7 +61,34 @@ namespace PointOfSale.Domain.Features.ProductCategory
             }
         }
 
-       
+        public async Task<Result<List<ProductCategoryModel>>> GetProductCategoryAsync()
+        {
+            Result<List<ProductCategoryModel>> model;
+
+            try
+            {
+                var productCategory = _db.TblProductCategories
+                    .Where(x => x.DeleteFlag == false)
+                    .AsNoTracking();
+
+                var item = await productCategory.Select(x => new ProductCategoryModel()
+                {
+                    ProductCategoryId = x.ProductCategoryId,
+                    ProductCategoryCode = x.ProductCategoryCode,
+                    Name = x.Name,
+                    DeleteFlag = false
+                   
+                }).ToListAsync();
+
+                return Result<List<ProductCategoryModel>>.Success(item);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<ProductCategoryModel>>.SystemError(ex.Message);
+            }
+        }
+
+        
     }
 }
 
