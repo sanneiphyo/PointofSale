@@ -50,6 +50,8 @@ public class ProductCategoryController : ControllerBase
 
     #endregion
 
+    #region UpdateProductCategoryAsync
+
 
     [HttpPut("{productCategoryCode}")]
     public async Task<IActionResult> UpdateProductCategoryAsync(string productCategoryCode, ProductCategoryResModel resModel)
@@ -65,5 +67,7 @@ public class ProductCategoryController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 
 }
