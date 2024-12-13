@@ -14,56 +14,54 @@ namespace PointOfSale.Domain.Features.ProductCategory
             _db = db;
         }
 
-        //public async Task<Result<ProductCategoryResponseModel>> CreateProductCategoryAsync(ProductCategoryReqModel response)
-        //{
-        //    Result<ProductCategoryResponseModel> model = new Result<ProductCategoryResponseModel>();
+      
+        public async Task<Result<ProductCategoryReqModel>> CreateProductCategoryAsync(ProductCategoryReqModel response)
+        {
+            Result<ProductCategoryReqModel> model;
 
-        //    try
-        //    {
-        //        //check ProductCategoryCode
-        //        var existingCategory = await _db.TblProductCategories
-        //            .AsNoTracking()
-        //            .FirstOrDefaultAsync(x => x.ProductCategoryCode == response.ProductCategoryCode);
+            try
+            {
+                var existingProductCategory = await _db.TblProductCategories
+                                               .AsNoTracking()
+                                               .FirstOrDefaultAsync(x => x.ProductCategoryCode == response.ProductCategoryCode);
 
-        //        if (existingCategory != null)
-        //        {
-        //            model = Result<ProductCategoryResponseModel>.SystemError("Product Category Code already exists");
-        //            return model;
-        //        }
+                if (existingProductCategory is not null)
+                {
+                    model = Result<ProductCategoryReqModel>.SystemError("Product Code already exists");
+                    return model;
+                }
 
-        //        //check code length
-        //        if (response.ProductCategoryCode.Length != 4)
-        //        {
-        //            model = Result<ProductCategoryResponseModel>.SystemError("Product Category Code must be exactly 4 characters");
-        //            return model;
-        //        }
+                if (response.ProductCategoryCode.Length != 4)
+                {
+                    model = Result<ProductCategoryReqModel>.SystemError("Product Code must be exactly 4 numeric characters");
+                    return model;
+                }
 
-        //        //Create 
-        //        var productCategory = new TblProductCategory
-        //        {
-        //            ProductCategoryCode = response.ProductCategoryCode,
-        //            Name = response.Name,
-        //            DeleteFlag = response.DeleteFlag
-        //        };
+                var productCategory = new TblProductCategory
+                {
+                    ProductCategoryCode = response.ProductCategoryCode,
+                    Name = response.Name,
+                };
 
-        //        //update
-        //        await _db.TblProductCategories.AddAsync(productCategory);
-        //        await _db.SaveChangesAsync();
+                await _db.TblProductCategories.AddAsync(productCategory);
+                await _db.SaveChangesAsync();
 
-        //        model = Result<ProductCategoryResponseModel>.Success(new ProductCategoryResponseModel
-        //        {
-        //            ProductCategoryCode = productCategory.ProductCategoryCode,
-        //            Name = productCategory.Name,
-        //            DeleteFlag = productCategory.DeleteFlag
-        //        });
+                model = Result<ProductCategoryReqModel>.Success(new ProductCategoryReqModel
+                {
+                 
+                    ProductCategoryCode = productCategory.ProductCategoryCode,
+                    Name = productCategory.Name,
+                });
 
-        //        return model;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Result<ProductCategoryResponseModel>.SystemError(ex.Message);
-        //    }
-        //}
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return Result<ProductCategoryReqModel>.SystemError(ex.Message);
+            }
+        }
+
+       
     }
 }
 
