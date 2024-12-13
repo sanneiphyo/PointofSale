@@ -11,7 +11,8 @@ public class ProductCategoryController : ControllerBase
     {
         _service = service;
     }
-    
+
+    #region CreateProductCategoryAsync
 
     [HttpPost("Create")]
     public async Task<IActionResult> CreateProductCategoryAsync([FromBody] ProductCategoryReqModel reqModel)
@@ -28,7 +29,9 @@ public class ProductCategoryController : ControllerBase
         }
     }
 
+    #endregion
 
+    #region GetProductCategoryAsync
 
     [HttpGet("Get")]
     public async Task<IActionResult> GetProductCategoryAsync()
@@ -44,6 +47,8 @@ public class ProductCategoryController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 
 
     [HttpPut("{productCategoryCode}")]
