@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Models;
-using PointOfSale.Domain.Models.Product;
-using PointOfSale.Domain.Models.Sale;
-
-namespace PointOfSale.Domain.Features.Sale
+﻿namespace PointOfSale.Domain.Features.Sale
 {
     public  class SaleService
     {
