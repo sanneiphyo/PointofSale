@@ -44,6 +44,8 @@ public class SaleDetailsService
 
     #endregion
 
+    #region CreateSaleDetailAsync
+
     public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(TblSaleDetail saleDetail)
     {
         try
@@ -99,4 +101,7 @@ public class SaleDetailsService
 
         }
     }
+
+    #endregion
+
 }
