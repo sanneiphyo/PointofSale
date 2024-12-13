@@ -90,6 +90,8 @@ public class ProductCategoryService
 
     #endregion
 
+    #region UpdateProductCategoryAsync
+
     public async Task<Result<ProductCategoryResModel>> UpdateProductCategoryAsync(string productCategoryCode, ProductCategoryResModel resModel)
     {
         Result<ProductCategoryResModel> model;
@@ -118,5 +120,7 @@ public class ProductCategoryService
             return Result<ProductCategoryResModel>.SystemError(ex.Message);
         }
     }
+
+    #endregion
 }
 
