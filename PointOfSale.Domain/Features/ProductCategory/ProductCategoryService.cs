@@ -59,6 +59,8 @@ public class ProductCategoryService
 
     #endregion
 
+    #region GetProductCategoryAsync
+
     public async Task<Result<List<ProductCategoryModel>>> GetProductCategoryAsync()
     {
         Result<List<ProductCategoryModel>> model;
@@ -85,6 +87,8 @@ public class ProductCategoryService
             return Result<List<ProductCategoryModel>>.SystemError(ex.Message);
         }
     }
+
+    #endregion
 
     public async Task<Result<ProductCategoryResModel>> UpdateProductCategoryAsync(string productCategoryCode, ProductCategoryResModel resModel)
     {
