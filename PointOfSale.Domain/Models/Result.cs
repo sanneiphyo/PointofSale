@@ -6,7 +6,6 @@ public class Result<T>
     public bool IsError { get { return !IsSuccess; } }
     public bool IsValidationError { get { return Type == EnumRespType.ValidationError; } }
     public bool IsSystemError { get { return Type == EnumRespType.SystemError; } }
-
     private EnumRespType Type { get; set; }
     public T Data { get; set; }
     public string Message { get; set; }
@@ -40,6 +39,8 @@ public class Result<T>
 
     #endregion
 
+    #region ValidationError
+
     public static Result<T> ValidationError(string message, T? data = default)
     {
         return new Result<T>()
@@ -50,6 +51,10 @@ public class Result<T>
             Message = message
         };
     }
+
+    #endregion
+
+    #region SystemError
 
     public static Result<T> SystemError(string message, T? data = default)
     {
@@ -62,6 +67,10 @@ public class Result<T>
         };
     }
 
+    #endregion
+
+    #region EnumRespType
+
     public enum EnumRespType
     {
         None,
@@ -69,5 +78,7 @@ public class Result<T>
         ValidationError,
         SystemError
     }
+
+    #endregion
 
 }
