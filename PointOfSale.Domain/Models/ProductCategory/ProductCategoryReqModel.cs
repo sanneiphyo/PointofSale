@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PointOfSale.Domain.Models.ProductCategory
 {
     public class ProductCategoryReqModel
@@ -12,6 +6,5 @@ namespace PointOfSale.Domain.Models.ProductCategory
 
         public string Name { get; set; } = null!;
 
-        public bool? DeleteFlag { get; set; }
     }
 }
