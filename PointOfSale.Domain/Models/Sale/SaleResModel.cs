@@ -9,8 +9,11 @@ public class ResultSaleModel
 
 #endregion
 
+#region ResultSaleDetailModel
+
 public class ResultSaleDetailModel
 {
     public TblSaleDetail? Detail { get; set; }
-
 }
+
+#endregion
