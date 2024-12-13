@@ -10,7 +10,9 @@ public  class SaleService
         _db = db;
         _saleDetailsService = saleDetailsService;
     }
-    
+
+    #region GetSaleAsync
+
     public async Task<Result<ResultSaleModel>> GetSaleAsync( string voucherNo)
     {
         Result<ResultSaleModel> model = new Result<ResultSaleModel>();
@@ -43,6 +45,8 @@ public  class SaleService
             return Result<ResultSaleModel>.SystemError(ex.Message);
         }
     }
+
+    #endregion
 
     public async Task<Result<ResultSaleModel>> CreateSaleAsync(TblSale sale)
     {
