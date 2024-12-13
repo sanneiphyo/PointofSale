@@ -33,6 +33,20 @@ namespace PointofSale.RestApi.Controllers
 
   
 
+        [HttpGet("Get")]
+        public async Task<IActionResult> GetProductCategoryAsync()
+        {
+            try
+            {
+                var lst = await _service.GetProductCategoryAsync();
+                return Ok(lst);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
 
     }
 }
