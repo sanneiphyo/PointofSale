@@ -88,7 +88,34 @@ namespace PointOfSale.Domain.Features.ProductCategory
             }
         }
 
-        
+        public async Task<Result<ProductCategoryResModel>> UpdateProductCategoryAsync(string productCategoryCode, ProductCategoryResModel resModel)
+        {
+            Result<ProductCategoryResModel> model;
+
+            try
+            {
+                var productCategory = await _db.TblProductCategories.FirstOrDefaultAsync(x => x.ProductCategoryCode == productCategoryCode);
+
+                if (productCategory is null)
+                {
+                    model = Result<ProductCategoryResModel>.SystemError("No Data Found with this Product Code");
+                    return model;
+                }
+
+                productCategory.Name = resModel.Name;
+
+                _db.TblProductCategories.Update(productCategory);
+                await _db.SaveChangesAsync();
+
+                model = Result<ProductCategoryResModel>.Success(resModel);
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return Result<ProductCategoryResModel>.SystemError(ex.Message);
+            }
+        }
     }
 }
 
