@@ -13,6 +13,8 @@ public class SalesController : ControllerBase
         _saleDetailsService = saleDetailsService;
     }
 
+    #region GetSale
+
     [HttpGet("get-sale-by-voucher")]
     public async Task<IActionResult> GetSale(string voucherNo)
     {
@@ -34,6 +36,8 @@ public class SalesController : ControllerBase
         }
     }
 
+    #endregion
+
     //[HttpPost("sale")]
     //public async Task<IActionResult> CreateSale(SaleRequestModel reqModel)
     //{
@@ -53,6 +57,8 @@ public class SalesController : ControllerBase
     //        return StatusCode(500, new { error = ex.Message });
     //    }
     //}
+
+    #region CreateSale
 
     [HttpPost("sale")]
     public async Task<IActionResult> CreateSale(SaleRequestModel reqModel)
@@ -79,4 +85,6 @@ public class SalesController : ControllerBase
             return StatusCode(500, new { error = ex.Message });
         }
     }
+
+    #endregion
 }
