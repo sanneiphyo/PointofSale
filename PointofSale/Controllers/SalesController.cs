@@ -5,41 +5,41 @@ using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Features.Sale;
 using PointOfSale.Domain.Models.Sale;
 
-namespace PointofSale.RestApi.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class SalesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SalesController : ControllerBase
+    private readonly SaleService _saleService;
+    private readonly SaleDetailsService _saleDetailsService;
+
+    public SalesController(SaleService saleService, SaleDetailsService saleDetailsService)
     {
-        private readonly SaleService _saleService;
-        private readonly SaleDetailsService _saleDetailsService;
+        _saleService = saleService;
+        _saleDetailsService = saleDetailsService;
+    }
 
-        public SalesController(SaleService saleService, SaleDetailsService saleDetailsService)
+    #region GetSale
+
+    [HttpGet("get-sale-by-voucher")]
+    public async Task<IActionResult> GetSale(string voucherNo)
+    {
+        try
         {
-            _saleService = saleService;
-            _saleDetailsService = saleDetailsService;
-        }
+            var lst = await _saleService.GetSaleAsync(voucherNo);
+            var saleDetailResult = await _saleDetailsService.GetSaleDetailAsync(voucherNo);
 
-        [HttpGet("get-sale-by-voucher")]
-        public async Task<IActionResult> GetSale(string voucherNo)
+            return Ok(new
+            {
+                SaleDetail = lst,
+                SaleDetailResult = saleDetailResult
+            });
+        }
+        catch (Exception ex)
         {
-            try
-            {
-                var lst = await _saleService.GetSaleAsync(voucherNo);
-                var saleDetailResult = await _saleDetailsService.GetSaleDetailAsync(voucherNo);
 
-                return Ok(new
-                {
-                    SaleDetail = lst,
-                    SaleDetailResult = saleDetailResult
-                });
-            }
-            catch (Exception ex)
-            {
-
-                return StatusCode(500, new { error = ex.Message });
-            }
+            return StatusCode(500, new { error = ex.Message });
         }
+    }
 
         [HttpPost("sale")]
         public async Task<IActionResult> CreateSale(ResultSaleModel sale)

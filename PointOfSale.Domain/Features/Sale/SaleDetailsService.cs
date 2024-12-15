@@ -1,39 +1,29 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Models;
-using PointOfSale.Domain.Models.Product;
-using PointOfSale.Domain.Models.Sale;
+﻿namespace PointOfSale.Domain.Features.Sale;
 
-namespace PointOfSale.Domain.Features.Sale
+public class SaleDetailsService
 {
-    public class SaleDetailsService
+    private readonly AppDbContext _db;
+
+    public SaleDetailsService(AppDbContext db)
     {
-        private readonly AppDbContext _db;
+        _db = db;
+    }
 
-        public SaleDetailsService(AppDbContext db)
-        {
-            _db = db;
-        }
+    #region GetSaleDetailAsync
 
-        public async Task<Result<ResultSaleDetailModel>> GetSaleDetailAsync(string voucherNo)
+    public async Task<Result<ResultSaleDetailModel>> GetSaleDetailAsync(string voucherNo)
+    {
+        try
         {
-            try
+            Result<ResultSaleDetailModel> model = new Result<ResultSaleDetailModel>();
+
+            var SaleDetails = await _db.TblSaleDetails.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == voucherNo);
+
+            if (string.IsNullOrEmpty(SaleDetails.VoucherNo))
             {
-                Result<ResultSaleDetailModel> model = new Result<ResultSaleDetailModel>();
-
-                var SaleDetails = await _db.TblSaleDetails.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == voucherNo);
-
-                if (string.IsNullOrEmpty(SaleDetails.VoucherNo))
-                {
-                    model = Result<ResultSaleDetailModel>.SystemError("Voucher does not exist");
-                    goto Result;
-                }
+                model = Result<ResultSaleDetailModel>.SystemError("Voucher does not exist");
+                goto Result;
+            }
 
                 var responseModel = new ResultSaleDetailModel
                 {
@@ -44,17 +34,17 @@ namespace PointOfSale.Domain.Features.Sale
 
                 };
 
-                model = Result<ResultSaleDetailModel>.Success(responseModel, "Product retrieved successfully.");
+            model = Result<ResultSaleDetailModel>.Success(responseModel, "Product retrieved successfully.");
 
-            Result:
-                return model;
-            }
-            catch (Exception ex)
-            {
-                return Result<ResultSaleDetailModel>.SystemError(ex.Message);
-
-            }
+        Result:
+            return model;
         }
+        catch (Exception ex)
+        {
+            return Result<ResultSaleDetailModel>.SystemError(ex.Message);
+
+        }
+    }
 
 
         public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(ResultSaleDetailModel saleDetail)

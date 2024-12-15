@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PointOfSale.DataBase.AppDbContextModels;
+﻿namespace PointOfSale.Domain.Models.ProductCategory;
 
-namespace PointOfSale.Domain.Models.ProductCategory
+#region ProductCategoryResModel
+
+public class ProductCategoryResModel
 {
-    public class ResultProductCategoryResponseModel
-    {
-        public TblProductCategory? ProductCategory { get; set; }
-    }
+    public string Name { get; set; } = null!;
 }
+
+#endregion
 

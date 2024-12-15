@@ -12,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 } ,ServiceLifetime.Transient, ServiceLifetime.Transient);
 
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProductCategoryService>();
 
 builder.Services.AddScoped<SaleService>();
 builder.Services.AddScoped<SaleDetailsService>();
