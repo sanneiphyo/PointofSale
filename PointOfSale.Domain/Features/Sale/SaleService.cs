@@ -1,17 +1,17 @@
 ﻿
 
-using PointOfSale.Domain.Features.Sale;
+using PointOfSale.DataBase.AppDbContextModels;
+
 using PointOfSale.Domain.Models.Sale;
+using static PointOfSale.Domain.Models.Sale.ResultSaleModel;
 
 public class SaleService
 {
     private readonly AppDbContext _db;
-    private readonly SaleDetailsService _saleDetailsService;
 
-    public SaleService(AppDbContext db, SaleDetailsService saleDetailsService)
+    public SaleService(AppDbContext db)
     {
         _db = db;
-        _saleDetailsService = saleDetailsService;
     }
 
     public async Task<Result<ResultSaleModel>> GetSaleAsync(string voucherNo)
@@ -28,19 +28,9 @@ public class SaleService
                 goto Result;
             }
 
-           
-            var saleDetailsResult = await _saleDetailsService.GetSaleDetailAsync(voucherNo);
-
-            if (!saleDetailsResult.IsSuccess)
-            {
-                model = Result<ResultSaleModel>.ValidationError("Error");
-                goto Result;
-            }
-
             var responseModel = new ResultSaleModel
             {
                 VoucherNo = sale.VoucherNo,
-                SaleDate = sale.SaleDate,
                 TotalAmount = sale.TotalAmount,
              
             };
@@ -56,46 +46,75 @@ public class SaleService
         }
     }
 
-    public async Task<Result<ResultSaleModel>> CreateSaleAsync(ResultSaleModel sale)
+    public async Task<Result<ResultSaleModel>> CreateSaleAsync(ResultSaleModel request)
     {
-        try
-        {
-            var existingSale = await _db.TblSales.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == sale.VoucherNo);
+        Result<ResultSaleModel> model = new Result<ResultSaleModel>();
+        var totalAmount = 0m;
 
-            if (existingSale != null)
+
+        var sale = new TblSale
+        {
+            VoucherNo = request.VoucherNo,
+            SaleDate = DateTime.UtcNow,
+        };
+
+        await _db.TblSales.AddAsync(sale);
+        await _db.SaveChangesAsync();
+
+        var saleItems = new List<SaleItem>();
+
+        foreach (var item in request.SaleItems)
+        {
+            var product = await _db.TblProducts
+                                  .AsNoTracking()
+                                  .FirstOrDefaultAsync(x => x.ProductCode == item.ProductCode );
+
+            if (product is null)
             {
-                return Result<ResultSaleModel>.ValidationError("A sale with this voucher number already exists.");
+                model = Result<ResultSaleModel>.ValidationError("Product does not exist");
+                goto Result;
             }
 
-         
-            var newSale = new TblSale
+            var saleDetail = new TblSaleDetail
             {
-                VoucherNo = sale.VoucherNo,
-                SaleDate = sale.SaleDate,
-                TotalAmount = sale.TotalAmount 
+                VoucherNo = request.VoucherNo,
+                ProductCode = item.ProductCode,
+                Quantity = item.Quantity.ToString(),
+                Price = product.Price
             };
+            await _db.TblSaleDetails.AddAsync(saleDetail);
 
-        
-            await _db.TblSales.AddAsync(newSale);
-            await _db.SaveChangesAsync();
+            totalAmount += product.Price * item.Quantity;
 
-          
-            var responseModel = new ResultSaleModel
+            saleItems.Add(new ResultSaleModel.SaleItem
             {
-                VoucherNo = newSale.VoucherNo,
-                SaleDate = newSale.SaleDate,
-                TotalAmount = newSale.TotalAmount
-            };
-
-            return Result<ResultSaleModel>.Success(responseModel, "Sale created successfully.");
+                ProductCode = product.ProductCode,
+                Quantity = item.Quantity,
+                Price = product.Price
+            });
         }
-        catch (Exception ex)
+        await _db.SaveChangesAsync();
+
+        sale.TotalAmount = totalAmount;
+        _db.TblSales.Update(sale);
+        await _db.SaveChangesAsync();
+
+        var response = new ResultSaleModel
         {
-            return Result<ResultSaleModel>.SystemError($"An error occurred: {ex.Message}");
-        }
+            VoucherNo = sale.VoucherNo,
+            SaleDate = (DateTime)sale.SaleDate,
+            TotalAmount = sale.TotalAmount,
+            SaleItems = saleItems
+        };
+
+        model = Result<ResultSaleModel>.Success(response, "Sale created successfully.");
+
+    Result:
+        return model;
     }
+}
 
    
 
 
-}
+

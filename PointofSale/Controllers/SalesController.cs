@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Features.Sale;
 using PointOfSale.Domain.Models.Sale;
 
 [Route("api/[controller]")]
@@ -10,44 +9,39 @@ using PointOfSale.Domain.Models.Sale;
 public class SalesController : ControllerBase
 {
     private readonly SaleService _saleService;
-    private readonly SaleDetailsService _saleDetailsService;
 
-    public SalesController(SaleService saleService, SaleDetailsService saleDetailsService)
+
+    public SalesController(SaleService saleService)
     {
         _saleService = saleService;
-        _saleDetailsService = saleDetailsService;
+
     }
 
     #region GetSale
 
-    [HttpGet("get-sale-by-voucher")]
-    public async Task<IActionResult> GetSale(string voucherNo)
-    {
-        try
+        [HttpGet("get-sale-by-voucher")]
+        public async Task<IActionResult> GetSale(string voucherNo)
         {
-            var lst = await _saleService.GetSaleAsync(voucherNo);
-            var saleDetailResult = await _saleDetailsService.GetSaleDetailAsync(voucherNo);
-
-            return Ok(new
+            try
             {
-                SaleDetail = lst,
-                SaleDetailResult = saleDetailResult
-            });
-        }
-        catch (Exception ex)
-        {
+                var lst = await _saleService.GetSaleAsync(voucherNo);
+         
+               return Ok(lst);
+            }
+            catch (Exception ex)
+            {
 
-            return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
-    }
+
+
 
         [HttpPost("sale")]
         public async Task<IActionResult> CreateSale(ResultSaleModel sale)
         {
             try
             {
-
-               
                 var Sale = await _saleService.CreateSaleAsync(sale);
 
               return Ok(Sale);
@@ -59,5 +53,5 @@ public class SalesController : ControllerBase
             }
         }
 
-    }
-}
+  }
+#endregion

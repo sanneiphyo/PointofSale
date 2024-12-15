@@ -1,3 +1,5 @@
+using PointOfSale.Domain.Features.ProductCategory;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -15,7 +17,7 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<ProductCategoryService>();
 
 builder.Services.AddScoped<SaleService>();
-builder.Services.AddScoped<SaleDetailsService>();
+
 
 #endregion
 
