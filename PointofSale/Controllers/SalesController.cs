@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using PointOfSale.DataBase.AppDbContextModels;
 using PointOfSale.Domain.Features.Sale;
@@ -40,50 +41,23 @@ namespace PointofSale.RestApi.Controllers
             }
         }
 
-        //[HttpPost("sale")]
-        //public async Task<IActionResult> CreateSale(SaleRequestModel reqModel)
-        //{
-        //    try
-        //    {
-        //        TblSale sale = reqModel.Sale!;
-        //        TblSaleDetail saleDetail = reqModel.SaleDetail!;
-
-        //        var item = await _saleService.CreateSaleAsync(sale);
-        //        var result = await _saleDetailsService.CreateSaleDetailAsync(saleDetail);
-
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return StatusCode(500, new { error = ex.Message });
-        //    }
-        //}
-
         [HttpPost("sale")]
-        public async Task<IActionResult> CreateSale(SaleRequestModel reqModel)
+        public async Task<IActionResult> CreateSale(ResultSaleModel sale)
         {
             try
             {
-            
-                TblSale sale = reqModel.Sale!;
-                TblSaleDetail saleDetail = reqModel.SaleDetail!;
 
-              
-                var saleResult = await _saleService.CreateSaleAsync(sale);
-              
-                var saleDetailResult = await _saleDetailsService.CreateSaleDetailAsync(saleDetail);
-             
-                return Ok(new
-                {
-                    Sale = saleResult.Data,
-                    SaleDetail = saleDetailResult.Data
-                });
+               
+                var Sale = await _saleService.CreateSaleAsync(sale);
+
+              return Ok(Sale);
             }
             catch (Exception ex)
             {
+
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
     }
 }

@@ -37,7 +37,11 @@ namespace PointOfSale.Domain.Features.Sale
 
                 var responseModel = new ResultSaleDetailModel
                 {
-                    Detail = SaleDetails
+                    VoucherNo = voucherNo,
+                    ProductCode = SaleDetails.ProductCode,
+                    Quantity = SaleDetails.Quantity,
+                    Price = SaleDetails.Price,
+
                 };
 
                 model = Result<ResultSaleDetailModel>.Success(responseModel, "Product retrieved successfully.");
@@ -52,60 +56,82 @@ namespace PointOfSale.Domain.Features.Sale
             }
         }
 
-        public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(TblSaleDetail saleDetail)
+
+        public async Task<Result<ResultSaleDetailModel>> CreateSaleDetailAsync(ResultSaleDetailModel saleDetail)
         {
             try
             {
-                Result<ResultSaleDetailModel> model = new Result<ResultSaleDetailModel>();
 
-                var voucherNumber = await _db.TblSales.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
-                var productCode =await _db.TblProducts.AsNoTracking().FirstOrDefaultAsync(x => x.ProductCode == saleDetail.ProductCode);
-                var voucherSaleDetails =await _db.TblSaleDetails.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
+                var voucher = await _db.TblSales.AsNoTracking().FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo);
 
-                if (voucherNumber is null)
+
+                var product = await _db.TblProducts.AsNoTracking()
+                   .FirstOrDefaultAsync(x => x.ProductCode == saleDetail.ProductCode);
+
+
+                var existingSaleDetail = await _db.TblSaleDetails.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.VoucherNo == saleDetail.VoucherNo && x.ProductCode == saleDetail.ProductCode);
+
+
+                if (voucher == null)
                 {
-                     model = Result<ResultSaleDetailModel>.ValidationError("Voucher No doesn't exist in Sale.");
-                    goto Result;
+                    return Result<ResultSaleDetailModel>.ValidationError("Voucher No doesn't exist in Sale.");
                 }
-                if (productCode is null)
+
+                if (product == null)
                 {
-                    model = Result<ResultSaleDetailModel>.ValidationError("Product Code doesn't exist. Please Create Product Code first!");
-                    goto Result;
+                    return Result<ResultSaleDetailModel>.ValidationError("Product Code doesn't exist. Please create Product Code first!");
                 }
-                if (voucherSaleDetails != null)
+
+                if (existingSaleDetail != null)
                 {
-                     Result<ResultSaleDetailModel>.ValidationError("Voucher is already exist.");
-                    goto Result;
+                    return Result<ResultSaleDetailModel>.ValidationError("Sale detail for this Voucher and Product already exists.");
                 }
+
                 if (!decimal.TryParse(saleDetail.Quantity, out var quantity))
                 {
-                    model = Result<ResultSaleDetailModel>.ValidationError("Invalid quantity value.");
-                    goto Result;
+                    return Result<ResultSaleDetailModel>.ValidationError("Invalid quantity value.");
                 }
 
-                voucherNumber.TotalAmount = productCode.Price * quantity;
-                saleDetail.Price = productCode.Price;  
 
-                _db.TblSales.Update(voucherNumber);
-                await _db.TblSaleDetails.AddAsync(saleDetail);
+                var totalAmount = product.Price * quantity;
+                saleDetail.Price = product.Price;
+
+
+                voucher.TotalAmount += totalAmount;
+
+                var saleDetailEntity = new TblSaleDetail
+                {
+                    VoucherNo = saleDetail.VoucherNo,
+                    ProductCode = saleDetail.ProductCode,
+                    Quantity = quantity.ToString(),
+                    Price = saleDetail.Price,
+
+                };
+
+
+                await _db.TblSaleDetails.AddAsync(saleDetailEntity);
+                _db.TblSales.Update(voucher);
                 await _db.SaveChangesAsync();
+
 
                 var responseModel = new ResultSaleDetailModel
                 {
-                    Detail = saleDetail
+                    VoucherNo = saleDetailEntity.VoucherNo,
+                    ProductCode = saleDetailEntity.ProductCode,
+                    Quantity = quantity.ToString(),
+                    Price = saleDetailEntity.Price
                 };
 
-                model = Result<ResultSaleDetailModel>.Success(responseModel, "Product retrieved successfully.");
-
-            Result:
-                return model;
-
+                return Result<ResultSaleDetailModel>.Success(responseModel, "Sale detail created successfully.");
             }
             catch (Exception ex)
             {
-                return Result<ResultSaleDetailModel>.SystemError(ex.Message);
-
+                return Result<ResultSaleDetailModel>.SystemError($"An error occurred: {ex.Message}");
             }
         }
+
+
+    
     }
 }
