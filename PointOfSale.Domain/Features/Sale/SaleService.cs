@@ -7,6 +7,8 @@
         _db = db;
     }
 
+    #region GetSaleAsync
+
     public async Task<Result<ResultSaleModel>> GetSaleAsync(string voucherNo)
     {
         Result<ResultSaleModel> model = new Result<ResultSaleModel>();
@@ -38,6 +40,9 @@
             return Result<ResultSaleModel>.SystemError(ex.Message);
         }
     }
+
+    #endregion
+
 
     public async Task<Result<ResultSaleModel>> CreateSaleAsync(ResultSaleModel request)
     {
