@@ -1,5 +1,3 @@
-using PointOfSale.Domain.Features.ProductCategory;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
