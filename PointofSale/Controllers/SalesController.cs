@@ -13,7 +13,8 @@ public class SalesController : ControllerBase
 
     #region GetSale
 
-        [HttpGet("get-sale-by-voucher")]
+
+    [HttpGet("get-sale-by-voucher")]
         public async Task<IActionResult> GetSale(string voucherNo)
         {
             try
@@ -29,9 +30,10 @@ public class SalesController : ControllerBase
             }
         }
 
+    #endregion
 
 
-        [HttpPost("sale")]
+    [HttpPost("sale")]
         public async Task<IActionResult> CreateSale(ResultSaleModel sale)
         {
             try
@@ -48,4 +50,3 @@ public class SalesController : ControllerBase
         }
 
   }
-#endregion
