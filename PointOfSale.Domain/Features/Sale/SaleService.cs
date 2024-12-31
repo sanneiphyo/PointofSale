@@ -1,9 +1,4 @@
-﻿
-
-using PointOfSale.DataBase.AppDbContextModels;
-
-using PointOfSale.Domain.Models.Sale;
-using static PointOfSale.Domain.Models.Sale.ResultSaleModel;
+﻿using static PointOfSale.Domain.Models.Sale.ResultSaleModel;
 
 public class SaleService
 {
