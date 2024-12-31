@@ -43,6 +43,7 @@
 
     #endregion
 
+    #region CreateSaleAsync
 
     public async Task<Result<ResultSaleModel>> CreateSaleAsync(ResultSaleModel request)
     {
@@ -110,9 +111,11 @@
     Result:
         return model;
     }
+
+    #endregion
 }
 
-   
+
 
 
 
