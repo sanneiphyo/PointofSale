@@ -1,6 +1,4 @@
-﻿using static PointOfSale.Domain.Models.Sale.ResultSaleModel;
-
-public class SaleService
+﻿public class SaleService
 {
     private readonly AppDbContext _db;
 
