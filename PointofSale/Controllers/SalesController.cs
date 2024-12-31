@@ -51,5 +51,4 @@ public class SalesController : ControllerBase
         }
 
     #endregion
-
 }
