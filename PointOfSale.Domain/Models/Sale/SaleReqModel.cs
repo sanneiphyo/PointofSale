@@ -1,5 +1,4 @@
-﻿
-namespace PointOfSale.Domain.Models.Sale
+﻿namespace PointOfSale.Domain.Models.Sale
 {
     public class SaleRequestMode
     {
