@@ -1,17 +1,16 @@
-﻿namespace PointOfSale.Domain.Models.Sale
+﻿namespace PointOfSale.Domain.Models.Sale;
+
+public class SaleRequestMode
 {
-    public class SaleRequestMode
-    {
-        public int SaleId { get; set; }
+    public int SaleId { get; set; }
 
-        public string VoucherNo { get; set; } = null!;
+    public string VoucherNo { get; set; } = null!;
 
-        public DateTime? SaleDate { get; set; }
+    public DateTime? SaleDate { get; set; }
 
-        public decimal TotalAmount { get; set; }
+    public decimal TotalAmount { get; set; }
 
-        public virtual ICollection<TblSaleDetail> TblSaleDetails { get; set; } = new List<TblSaleDetail>();
+    public virtual ICollection<TblSaleDetail> TblSaleDetails { get; set; } = new List<TblSaleDetail>();
 
 
-    }
 }
