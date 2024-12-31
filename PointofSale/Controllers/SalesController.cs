@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using PointOfSale.DataBase.AppDbContextModels;
-using PointOfSale.Domain.Models.Sale;
-
-[Route("api/[controller]")]
+﻿[Route("api/[controller]")]
 [ApiController]
 public class SalesController : ControllerBase
 {
