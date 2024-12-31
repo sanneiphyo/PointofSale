@@ -32,6 +32,7 @@ public class SalesController : ControllerBase
 
     #endregion
 
+    #region CreateSale
 
     [HttpPost("sale")]
         public async Task<IActionResult> CreateSale(ResultSaleModel sale)
@@ -49,4 +50,6 @@ public class SalesController : ControllerBase
             }
         }
 
-  }
+    #endregion
+
+}
