@@ -1,4 +1,7 @@
 ﻿namespace PointOfSale.Domain.Models.Sale;
+
+#region ResultSaleModel
+
 public class ResultSaleModel
 {
     public string VoucherNo { get; set; }
@@ -18,3 +21,5 @@ public class ResultSaleModel
 
     #endregion
 }
+
+#endregion
