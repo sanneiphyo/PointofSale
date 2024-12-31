@@ -1,6 +1,4 @@
 ﻿namespace PointOfSale.Domain.Models.Sale;
-
-
 public class ResultSaleModel
 {
     public string VoucherNo { get; set; }
