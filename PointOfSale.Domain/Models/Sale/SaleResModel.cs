@@ -6,6 +6,8 @@ public class ResultSaleModel
     public decimal TotalAmount { get; set; }
     public List<SaleItem> SaleItems { get; set; }
 
+    #region SaleItem
+
     public class SaleItem
     {
         public string ProductCode { get; set; }
@@ -13,4 +15,6 @@ public class ResultSaleModel
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }
+
+    #endregion
 }
